@@ -25,7 +25,7 @@ def similares(lista_R, lista_S, atr_R, atr_S, n_R, n_S):
                 comun.append([atr_R[i],i,j])
 
     lista_T = busqueda(comun,lista_R,lista_S)
-    atr_T = list(dict.fromkeys(atr_R + atr_S)) #Unimos atrivutos de R y S y quitamos repetidos
+    atr_T = list(dict.fromkeys(atr_R + atr_S)) #Unimos atributos de R y S y quitamos repetidos
 
     print(len(atr_T))
     print(*atr_T)
