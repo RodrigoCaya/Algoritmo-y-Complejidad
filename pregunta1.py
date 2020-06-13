@@ -1,6 +1,5 @@
 
 def busqueda(comun, lista_R, lista_S):
-    n = len(comun)
     lista_T = []
     for t_R in lista_R:
         for t_S in lista_S:
@@ -10,7 +9,7 @@ def busqueda(comun, lista_R, lista_S):
                 pos_atr_R = t_comun[1]
                 pos_atr_S = t_comun[2]
                 if (t_R[pos_atr_R] == t_S[pos_atr_S]):
-                    del temp2[pos_atr_S:(pos_atr_S + n)]
+                    temp2.remove(t_S[pos_atr_S])
                 else: 
                     flag = 1
             if (flag == 0):
@@ -23,7 +22,6 @@ def similares(lista_R, lista_S, atr_R, atr_S, n_R, n_S):
         for j in range(n_S):
             if (atr_R[i]==atr_S[j]) :
                 comun.append([atr_R[i],i,j])
-
     lista_T = busqueda(comun,lista_R,lista_S)
     atr_T = list(dict.fromkeys(atr_R + atr_S)) #Unimos atributos de R y S y quitamos repetidos
 
