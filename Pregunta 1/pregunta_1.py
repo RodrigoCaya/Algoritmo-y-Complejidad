@@ -1,4 +1,3 @@
-
 def busqueda(comun, lista_R, lista_S):
     lista_T = []
     for t_R in lista_R:
