@@ -5,6 +5,27 @@ k = int(linea_1[1])
 matriz_1 = []
 matriz_2 = []
 
+
+
+
+def combinar(C1, C2, C3, C4): # combina cuatro matrices en una
+    p = len(C1)*2
+    matriz=[]
+    for fila in range(p):       # creamos una matriz del doble de dimensiones y llenamos con ceros
+        lista = []
+        for columna in range(p):
+            lista.append(0)
+        matriz.append(lista)
+
+    for i in range(len(C1)):    #rellenamos matriz con valores de las matrices C1, C2, C3 y C4
+            for j in range(len(C1)):
+                matriz[i][j] = C1[i][j] #primer cuadrante
+                matriz[i][j+len(C1)] = C2[i][j] #segundo cuadrante
+                matriz[i+len(C1)][j] = C3[i][j] #tercer cuadrante
+                matriz[i+len(C1)][j+len(C1)] = C4[i][j] #cuarto cuadrante
+    return matriz
+
+
 #guardamos valores primera matriz
 for i in range(k * n):
     fila = list(map(int, input().rstrip().split(" ")))
@@ -14,13 +35,31 @@ for i in range(n):
     fila = list(map(int, input().rstrip().split(" ")))
     matriz_2.append(fila)
    
-def sum_matrices(matriz_1, matriz_2): #parametros: dos matrices y retorna la suma de las matrices
-    matriz_suma = []
-    matriz_suma.append([matriz_1[0][0] + matriz_2[0][0],matriz_1[0][1] + matriz_2[0][1]])
-    matriz_suma.append([matriz_1[1][0] + matriz_2[1][0],matriz_1[1][1] + matriz_2[1][1]])
-    return matriz_suma
+def sum_matrices(m1,m2): #parametros: dos matrices y retorna la suma de las matrices ok
+    if type(m1) == int:
+        suma = m1 + m2
+    else:
+        suma = []
+        for i in range(len(m1)):
+            lista = []
+            for j in range(len(m1[0])):
+                lista.append(m1[i][j] + m2[i][j])
+            suma.append(lista)
+    return suma
 
-def dividir_matrices(matriz,n):
+def res_matrices(m1,m2): #parametros: dos matrices y retorna la resta de las matrices ok
+    if type(m1) == int:
+        resta = m1 - m2
+    else:
+        resta = []
+        for i in range(len(m1)):
+            lista = []
+            for j in range(len(m1[0])):
+                lista.append(m1[i][j] - m2[i][j])
+            resta.append(lista)
+    return resta
+
+def dividir_matrices(matriz,n):     #ok
     i=0
     A=[]
     B=[]
@@ -38,37 +77,34 @@ def dividir_matrices(matriz,n):
             
 def strassen(m1,m2,n):
     if (n == 1):
-        return [m1[0][0]*m2[0][0]]
-
-    elif (n == 2): #multiplica matrices 2x2
-        a = m1[0][0]*m2[0][0] + m1[0][1]*m2[1][0]
-        b = m1[0][0]*m2[0][1] + m1[0][1]*m2[1][1]
-        c = m1[1][0]*m2[0][0] + m1[1][1]*m2[1][0]
-        d = m1[1][0]*m2[0][1] + m1[1][1]*m2[1][1]
-        return [[a,b],[c,d]]  #retorna matriz multiplicada
+        total = [[0]]
+        total [0][0] = m1[0][0]*m2[0][0]    
+        return total
 
     else:       # divide matrices en cuadrantes
         A,B,C,D = dividir_matrices(m1,n)
         E,F,G,H = dividir_matrices(m2,n)
-        #   ahora hay que hacer la suma de los cuadrantes 
-        P1 = sum_matrices(strassen(A,E,n/2), strassen(B,G,n/2))
-        P2 = sum_matrices(strassen(A,F,n/2), strassen(B,H,n/2))
-        P3 = sum_matrices(strassen(C,E,n/2), strassen(D,G,n/2))
-        P4 = sum_matrices(strassen(C,F,n/2), strassen(D,H,n/2))
-        return P1,P2,P3,P4
+        
+        P1 = strassen(sum_matrices(A,D), sum_matrices(E,H),n/2)
+        P2 = strassen(sum_matrices(C, D), E,n/2)
+        P3 = strassen(A, res_matrices(F, H),n/2)
+        P4 = strassen(D, res_matrices(G, E),n/2)
+        P5 = strassen(sum_matrices(A, B), H,n/2)
+        P6 = strassen(res_matrices(C, A), sum_matrices(E, F),n/2)
+        P7 = strassen(res_matrices(B, D), sum_matrices(G, H),n/2)
+        
+        C1 = sum_matrices(res_matrices(sum_matrices(P1,P4),P5),P7)
+        C2 = sum_matrices(P3,P5)
+        C3 = sum_matrices(P2,P4)
+        C4 = sum_matrices(res_matrices(sum_matrices(P1, P3), P2), P6)
 
-P1,P2,P3,P4 = strassen(matriz_1,matriz_2,n)
+        c = combinar(C1,C2,C3,C4)       #los parametros son las matrices a combinar en una del doble de sus dimensiones
+        
+        return c
 
-# entregar bien la matriz resultante, primera linea N  y M (filas y columnas), combinar
-#print(P1)
 
-matriz_final = []
-matriz_final.append(P1[0]+P2[0])
-matriz_final.append(P1[1]+P2[1])
-matriz_final.append(P3[0]+P4[0])
-matriz_final.append(P3[1]+P4[1])
 
-print(str(k*n) + " "+ str(k*n))
-#print(matriz_final)
-for i in range(len(matriz_final)):
-    print(*matriz_final[i])
+
+M = strassen(matriz_1,matriz_2,n)
+
+print(M)
