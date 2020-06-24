@@ -35,7 +35,7 @@ for i in range(n):
     fila = list(map(int, input().rstrip().split(" ")))
     matriz_2.append(fila)
    
-def sum_matrices(m1,m2): #parametros: dos matrices y retorna la suma de las matrices ok
+def sum_matrices(m1,m2): #parametros: dos matrices y retorna la suma de las matrices 
     if type(m1) == int:
         suma = m1 + m2
     else:
