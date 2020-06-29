@@ -2,24 +2,65 @@ def crearMatriz():
     linea_1 = input().rstrip().split(" ")
     n = int(linea_1[0])
     k = int(linea_1[1])
-
     matriz_1 = []
     matriz_2 = []
-
     #guardamos valores primera matriz
-    for i in range(k * n):
+    for i in range(n):
         fila = list(map(int, input().rstrip().split(" ")))
         matriz_1.append(fila)
 
-    for i in range(n):
+    for i in range(k * n):
         fila = list(map(int, input().rstrip().split(" ")))
         matriz_2.append(fila)
 
     return matriz_1,matriz_2,n,k
 
+def matriz_ceros(dim):
+    matriz = []
+    for i in range(dim):
+        fila = []
+        for j in range(dim):
+            fila.append(0)
+        matriz.append(fila)
+    return matriz
+
+def potencia_mas_cercana(kn):
+    for i in range(kn):
+        if (2**i >= kn):
+            return 2**i
+
+    
+def rellenar_matriz(matriz,k ,n):
+    dim = potencia_mas_cercana(k*n)
+    matriz_retorno = matriz_ceros(dim)
+    for i in range(len(matriz)):
+        for j in range(len(matriz[i])):
+            matriz_retorno[i][j] = matriz[i][j]
+    return matriz_retorno,dim
+
+def sacar_ceros(matriz,k ,n):
+    matriz_final = matriz_ceros(n)
+    for i in range(n):
+        for j in range(n):
+            matriz_final[i][j] = matriz[i][j]
+    
+    return matriz_final
+
+def metodoTradicional(a, b): 
+    if len(a[0]) != len(b): 
+        return "Las matrices no son de la forma m*n y n*p"
+    else:
+        matriz_multiplicada = matriz_ceros(len(a))
+        for i in range(len(a)):
+            for j in range(len(b[0])):
+                for k in range(len(b)):
+                    matriz_multiplicada[i][j] += a[i][k]*b[k][j]
+    return matriz_multiplicada
+
 
 def combinar(C1, C2, C3, C4): # combina cuatro matrices en una NO USAR LEN
     p = len(C1)*2 #no usar len
+    o = len(C1)
     matriz=[]
     for fila in range(p):       # creamos una matriz del doble de dimensiones y llenamos con ceros
         lista = []
@@ -27,12 +68,12 @@ def combinar(C1, C2, C3, C4): # combina cuatro matrices en una NO USAR LEN
             lista.append(0)
         matriz.append(lista)
 
-    for i in range(len(C1)):    #rellenamos matriz con valores de las matrices C1, C2, C3 y C4
-            for j in range(len(C1)):
+    for i in range(o):    #rellenamos matriz con valores de las matrices C1, C2, C3 y C4
+            for j in range(o):
                 matriz[i][j] = C1[i][j] #primer cuadrante
-                matriz[i][j+len(C1)] = C2[i][j] #segundo cuadrante
-                matriz[i+len(C1)][j] = C3[i][j] #tercer cuadrante
-                matriz[i+len(C1)][j+len(C1)] = C4[i][j] #cuarto cuadrante
+                matriz[i][j+o] = C2[i][j] #segundo cuadrante
+                matriz[i+o][j] = C3[i][j] #tercer cuadrante
+                matriz[i+o][j+o] = C4[i][j] #cuarto cuadrante
     return matriz
    
 def sum_matrices(m1,m2): #parametros: dos matrices y retorna la suma de las matrices 
@@ -40,9 +81,11 @@ def sum_matrices(m1,m2): #parametros: dos matrices y retorna la suma de las matr
         suma = m1 + m2
     else:
         suma = []
-        for i in range(len(m1)):
+        largo_m1 = len(m1)
+        largo_m1_columnas = len(m1[0])
+        for i in range(largo_m1):
             lista = []
-            for j in range(len(m1[0])):
+            for j in range(largo_m1_columnas):
                 lista.append(m1[i][j] + m2[i][j])
             suma.append(lista)
     return suma
@@ -51,11 +94,10 @@ def res_matrices(m1,m2): #parametros: dos matrices y retorna la resta de las mat
     if type(m1) == int:
         resta = m1 - m2
     else:
-        xd = len(m1[0])
         resta = []
         for i in range(len(m1)):
             lista = []
-            for j in range(xd):
+            for j in range(len(m1[0])):
                 lista.append(m1[i][j] - m2[i][j])
             resta.append(lista)
     return resta
@@ -106,6 +148,19 @@ def strassen(m1,m2,n):
 
 
 M1,M2,n,k = crearMatriz()
-M = strassen(M1,M2,n)
 
-print(M)
+#print(M1)
+#print(M2)
+
+matriz_1,N = rellenar_matriz(M1,k,n)
+matriz_2,N = rellenar_matriz(M2,k,n)
+
+
+strass = strassen(matriz_1,matriz_2,N)
+final = sacar_ceros(strass,k,n)
+
+print(str(len(final)) + " " + str(len(final[0])))
+for i in range(len(final)):
+    print(*final[i])
+
+#print(metodoTradicional(M1,M2))
