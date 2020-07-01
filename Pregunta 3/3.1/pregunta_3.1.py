@@ -1,4 +1,4 @@
-def crearMatriz():
+def crearMatriz(): #crea la matriz con los valores del input
     linea_1 = input().rstrip().split(" ")
     n = int(linea_1[0])
     k = int(linea_1[1])
@@ -9,13 +9,14 @@ def crearMatriz():
         fila = list(map(int, input().rstrip().split(" ")))
         matriz_1.append(fila)
 
+    #guardamos valores segunda matriz
     for i in range(n):
         fila = list(map(int, input().rstrip().split(" ")))
         matriz_2.append(fila)
 
     return matriz_1,matriz_2,n,k
 
-def matriz_ceros(dim):
+def matriz_ceros(dim): #crea una matriz cuadrada con 0's
     matriz = []
     for i in range(dim):
         fila = []
@@ -24,13 +25,12 @@ def matriz_ceros(dim):
         matriz.append(fila)
     return matriz
 
-def potencia_mas_cercana(kn):
+def potencia_mas_cercana(kn): #busca la potencia más cercana
     for i in range(kn):
         if (2**i >= kn):
             return 2**i
 
-    
-def rellenar_matriz(matriz,k ,n):
+def rellenar_matriz(matriz,k ,n): #convierte la matriz en potencia de 2 rellenando con 0's
     dim = potencia_mas_cercana(k*n)
     matriz_retorno = matriz_ceros(dim)
     for i in range(len(matriz)):
@@ -38,15 +38,14 @@ def rellenar_matriz(matriz,k ,n):
             matriz_retorno[i][j] = matriz[i][j]
     return matriz_retorno,dim
 
-def sacar_ceros(matriz,k ,n):
+def sacar_ceros(matriz,k ,n): #vuelve la matriz modificada a su tamano
     matriz_final = matriz_ceros(k*n)
     for i in range(k*n):
         for j in range(k*n):
             matriz_final[i][j] = matriz[i][j]
-    
     return matriz_final
 
-def metodoTradicional(a, b): 
+def metodoTradicional(a, b): #realiza la multiplicacion de forma tradicional 
     if len(a[0]) != len(b): 
         return "Las matrices no son de la forma m*n and n*p"
     else:
@@ -58,8 +57,8 @@ def metodoTradicional(a, b):
     return matriz_multiplicada
 
 
-def combinar(C1, C2, C3, C4): # combina cuatro matrices en una NO USAR LEN
-    p = len(C1)*2 #no usar len
+def combinar(C1, C2, C3, C4): # combina cuatro matrices en una
+    p = len(C1)*2
     o = len(C1)
     matriz=[]
     for fila in range(p):       # creamos una matriz del doble de dimensiones y llenamos con ceros
@@ -100,7 +99,7 @@ def res_matrices(m1,m2): #parametros: dos matrices y retorna la resta de las mat
             resta.append(lista)
     return resta
 
-def dividir_matrices(matriz,n):     #ok
+def dividir_matrices(matriz,n): #parametros: una matriz y su tamano, retorna la division de la matriz en cuadrantes
     i=0
     A=[]
     B=[]
@@ -108,7 +107,7 @@ def dividir_matrices(matriz,n):     #ok
     D=[]
     for fila in matriz:
         if(i<(n/2)):
-            A.append(fila[:int((n/2))]) #puede ser de más
+            A.append(fila[:int((n/2))])
             B.append(fila[int((n/2)):])
             i+=1
         else:
@@ -116,8 +115,8 @@ def dividir_matrices(matriz,n):     #ok
             D.append(fila[int((n/2)):])
     return(A,B,C,D)
             
-def strassen(m1,m2,n):
-    if (n == 1):
+def strassen(m1,m2,n):  #algoritmo Strassen
+    if (n == 1): #encuentra matrices tamano 1
         total = [[0]]
         total [0][0] = m1[0][0]*m2[0][0]    
         return total
@@ -144,16 +143,15 @@ def strassen(m1,m2,n):
         return c
 
 
+M1,M2,n,k = crearMatriz() #crea la matriz
 
-M1,M2,n,k = crearMatriz()
+matriz_1,N = rellenar_matriz(M1,k,n) #convierte la matriz 1 en potencia de 2 rellenando con 0's
+matriz_2,N = rellenar_matriz(M2,k,n) #convierte la matriz 2 en potencia de 2 rellenando con 0's
 
-matriz_1,N = rellenar_matriz(M1,k,n)
-matriz_2,N = rellenar_matriz(M2,k,n)
+strass = strassen(matriz_1,matriz_2,N) #desarrolla el algoritmo strassen
+final = sacar_ceros(strass,k,n) #vuelve la matriz a su tamano original
 
-strass = strassen(matriz_1,matriz_2,N)
-final = sacar_ceros(strass,k,n)
-
-print(str(len(final)) + " " + str(len(final[0])))
+print(str(len(final)) + " " + str(len(final[0]))) #printea el output
 for i in range(len(final)):
     print(*final[i])
 

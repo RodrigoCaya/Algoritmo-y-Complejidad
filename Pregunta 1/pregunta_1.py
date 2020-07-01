@@ -1,10 +1,10 @@
-def busqueda(comun, lista_R, lista_S):
+def busqueda(comun, lista_R, lista_S): #dentro de las columnas iguales busca los valores iguales
     lista_T = []
-    for t_R in lista_R:
-        for t_S in lista_S:
+    for t_R in lista_R: #itera en R
+        for t_S in lista_S: #itera en S
             temp2 = t_S.copy()
             flag = 0
-            for t_comun in comun:
+            for t_comun in comun: #itera en las columnas en comun
                 pos_atr_R = t_comun[1]
                 pos_atr_S = t_comun[2]
                 if (t_R[pos_atr_R] == t_S[pos_atr_S]):
@@ -15,11 +15,11 @@ def busqueda(comun, lista_R, lista_S):
                 lista_T.append(t_R + temp2)
     return(lista_T)
 
-def similares(lista_R, lista_S, atr_R, atr_S, n_R, n_S):
+def similares(lista_R, lista_S, atr_R, atr_S, n_R, n_S): 
     comun = []
     for i in range(n_R):
         for j in range(n_S):
-            if (atr_R[i]==atr_S[j]) :
+            if (atr_R[i]==atr_S[j]) : #busca columnas iguales
                 comun.append([atr_R[i],i,j])
     lista_T = busqueda(comun,lista_R,lista_S)
     atr_T = list(dict.fromkeys(atr_R + atr_S)) #Unimos atributos de R y S y quitamos repetidos
