@@ -1,10 +1,5 @@
 2020-1
-Tarea 1 Algoritmo y Complejidad
-
-Integrantes:
-Rodrigo Cayazaya 201773538-4
-Lucio Fondon 201773610-0
-Francisco Reyes 201773529-4
+Tarea 1 Algoritmos y Complejidad
 
 Esta tarea consistia en la realizacion de 3 preguntas, las primeras dos se realizaban con algoritmos Fuerza Bruta y la tercera con el algoritmo Dividir y Conquistar.
 
