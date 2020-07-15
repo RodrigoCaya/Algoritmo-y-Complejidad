@@ -1,8 +1,3 @@
-# 1) ordenar por tamaño
-# 2) ir metiendo si no tiene tope
-# 3) xdd
-
-
 def verTope(horario_1,horario_2):   
     if (horario_2[0] <= horario_1[1] and horario_2[0] >= horario_1[0]):
         return True
@@ -12,8 +7,6 @@ def verTope(horario_1,horario_2):
 
     else:
         return False
-
-
 
 def obtenerDatos():
     cant_horarios = int(input())
@@ -44,7 +37,7 @@ def alg_greedy(horarios):
             if (verTope(horarios[i],par_final)):
                 flag = False
                 break
-        if (flag == True):
+        if flag:
             lista_final.append(horarios[i])
     return sorted(lista_final)
             
@@ -53,4 +46,9 @@ horarios = obtenerDatos()
 horarios = ordenar(horarios)
 
 final = alg_greedy(horarios)
-print(final)
+print(len(final))
+for horario in final:
+    print(str(horario[0]),end='')
+    print(" ",end='')
+    print(str(horario[1]),end='')
+    print("\n",end='')
