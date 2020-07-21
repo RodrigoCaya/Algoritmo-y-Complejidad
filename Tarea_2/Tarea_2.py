@@ -4,7 +4,7 @@ def verTope(horario_1,horario_2):
 
     elif (horario_2[1] >= horario_1[0] and horario_2[1] <= horario_1[1]):
         return True
-
+        
     else:
         return False
 
@@ -15,8 +15,8 @@ def obtenerDatos():
         horarios.append(tuple(map(int,input().rstrip().split(" ")))) # Convertimos los valores a una tupla y los almacenamos en una lista
     return horarios
 
-def ordenar(horarios):
-    i = 0
+def ordenarPorRango(horarios):
+    i=0
     for par_horario in horarios:
         rango = par_horario[1] - par_horario[0]
         horarios[i] = (rango,par_horario[0],par_horario[1])
@@ -28,7 +28,7 @@ def ordenar(horarios):
         i+=1
     return horarios
 
-def alg_greedy(horarios):
+def Greedy(horarios):
     lista_final = [horarios[0]]
     n = len(horarios)
     for i in range(1,n):
@@ -41,11 +41,10 @@ def alg_greedy(horarios):
             lista_final.append(horarios[i])
     return sorted(lista_final)
             
-
 horarios = obtenerDatos()
-horarios = ordenar(horarios)
+horarios = ordenarPorRango(horarios)
 
-final = alg_greedy(horarios)
+final = Greedy(horarios)
 print(len(final))
 for horario in final:
     print(str(horario[0]),end='')
